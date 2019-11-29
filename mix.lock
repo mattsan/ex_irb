@@ -1,0 +1,3 @@
+%{
+  "ex_marshal": {:git, "https://github.com/mattsan/ex_marshal.git", "8ad672acd0fcd225ca6a7f514c550bb6d3fb064e", []},
+}
