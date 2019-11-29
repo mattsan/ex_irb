@@ -10,19 +10,22 @@ defmodule ExIRB.Requirer do
       functions
       |> Enum.map(fn {function, arity} ->
         args =
-          (?a..?z)
+          ?a..?z
           |> Stream.map(&{String.to_atom(<<&1>>), [], __MODULE__})
           |> Enum.take(arity)
 
         {
-          :def, [import: Kernel],
+          :def,
+          [import: Kernel],
           [
             {function, [], args},
-            [do: {
-              {:., [], [ExIRB, :apply]},
-              [],
-              [module, function, args]
-            }]
+            [
+              do: {
+                {:., [], [ExIRB, :apply]},
+                [],
+                [module, function, args]
+              }
+            ]
           ]
         }
       end)

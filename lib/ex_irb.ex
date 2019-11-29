@@ -14,11 +14,16 @@ defmodule ExIRB do
 
   def apply(server \\ @name, module, function, args) do
     [module_name] = Module.split(module)
+
     args_str =
       args
       |> Enum.map(fn arg ->
         arg
-        |> inspect(limit: :infinity, charlists: false, inspect_fun: &ExIRB.MapToHash.inspect_fun/2)
+        |> inspect(
+          limit: :infinity,
+          charlists: false,
+          inspect_fun: &ExIRB.MapToHash.inspect_fun/2
+        )
       end)
       |> Enum.join(",")
 
@@ -31,11 +36,14 @@ defmodule ExIRB do
 
   def init(opts) do
     path = System.find_executable("irb")
+
     requires =
       opts
       |> Keyword.get(:require, [])
       |> Enum.map(&"-r#{&1}")
-    port = Port.open({:spawn_executable, path}, [:binary, args: ["--noverbose", "--noecho" | requires]])
+
+    port =
+      Port.open({:spawn_executable, path}, [:binary, args: ["--noverbose", "--noecho" | requires]])
 
     {:ok, %{port: port, froms: []}}
   end
